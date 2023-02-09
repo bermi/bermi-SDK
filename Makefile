@@ -81,14 +81,8 @@ test-cached-deps: format lint lock.json
 		--unstable \
 		--ignore=$(IGNORED_DIRS)
 
-DENO_EXAMPLES=$(wildcard examples/*.ts)
-run-deno-examples: $(DENO_EXAMPLES)
-	for example in $^ ; do \
-		echo "Running $${example}"; \
-		deno run --unstable $${example} ; \
-	done
-
-run-examples: run-deno-examples
+run-examples:
+	deno run examples/deno/movies_and_quotes.ts
 	cd examples/nodejs/ && npm install && node index.js
 
 docs:
