@@ -1,6 +1,8 @@
 export DENO_DIR = ./deno_dir
 IGNORED_DIRS=deno_dir,npm
 
+all: build
+
 build: \
 	lock.json \
 	test \
@@ -54,7 +56,7 @@ npm:
 npm-publish: npm
 	cd npm && npm test && npm publish
 
-test: format lint
+test: format lint .git/hooks/pre-commit
 	deno test \
 		--allow-none \
 		--unstable \
@@ -81,3 +83,10 @@ coverage: clean test
 	genhtml -o coverage/html coverage/coverage.lcov
 	open coverage/html/index.html
 
+pre-commit: clean lock.json test build
+
+.git/hooks/pre-commit:
+	mkdir -p $(@D)
+	echo "#!/bin/sh" > $@
+	echo "make pre-commit" >> $@
+	chmod +x $@
