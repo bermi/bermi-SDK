@@ -20,7 +20,7 @@ simple and easy-to-use SDK.
 
 This project uses the
 [Deno runtime](https://deno.land/manual@v1.30.3/getting_started/installation) to
-develop, document, test, lint, format and build the SDK.
+develop, document, test, lint, format, and build the SDK.
 
 Deno provides a great developer experience out of the box. It allows developers
 to write TypeScript code that can run in the browser, in Node.js, and on
@@ -31,7 +31,7 @@ By using Deno we can:
 - Provide a simple and easy-to-use SDK for the LOTR API.
 - Allow the code to be used in as many environments as possible.
 - Built-in documentation for types and methods (`deno doc types.ts`).
-- Release dependency-free single binary CLI versions of the sdk for Windows,
+- Release dependency-free single binary CLI versions of the SDK for Windows,
   MacOS and Linux.
 - Enforce formatting and linting rules using `deno fmt` and `deno lint`.
 - Leverage the
@@ -54,7 +54,7 @@ The code is structured as follows:
 ```
 
 The SDK uses a Session instance to store the API key and the base URL of the API
-as well as other settings such as timeouts.
+as well as other settings, such as timeouts.
 
 The session will be passed to the Movie and Quote modules as a dependency. This
 allows simple mocking of the session for testing purposes.
@@ -101,16 +101,16 @@ through the `apiToken` option when creating the session or by setting the
 `LOTR_LOTR_API_TOKEN` environment variable.
 
 Supporting other authentication mechanisms, such as a file or a third-party
-secret manager, can be added when needed without breaking the API interface.
+secret manager can be added when needed without breaking the API interface.
 
 ### Pagination
 
 The LOTR API uses a simple pagination mechanism to return a list of results.
 
-At this time the parameters required by the SDK are the same as the ones
+At this time, the parameters required by the SDK are the same as the ones
 required by the API.
 
-In the future a `fetchAll` method could return a list of all the results for a
+In the future, a `fetchAll` method could return a list of all the results for a
 given resource. The `fetchAll` method could be used internally to implement
 `allMovies` and `allMovieQuotes` methods. While this seems an antipattern, the
 domain for Lord of the Rings is small enough that this would not be a problem as
@@ -147,7 +147,7 @@ optional memoization to avoid making unnecessary requests (n+1 queries).
 
 The API is rate limited to 100 requests per 10 minutes. The SDK should provide a
 way to inspect the headers X-RateLimit-Limit, X-RateLimit-Remaining, and
-X-RateLimit-Reset and retry the request after the rate limit. Choossing an
+X-RateLimit-Reset and retry the request after the rate limit. Choosing an
 existing library such as axios or superagent would allow us to avoid having to
 implement this logic ourselves, but it would also add a dependency to the SDK
 with luggage that we don't need and increase the bundle size.
@@ -166,7 +166,7 @@ versions of node.js and npm, and API response validation.
 ## Conclusion
 
 The LOTR API is a simple REST API that doesn't require a lot of complexity to be
-interacted with, a simple fetch method would suffice to cover most usecases;
+interacted with, a simple fetch method would suffice to cover most use cases;
 however, an SDK can be a great tool to help developers to simplify testing,
 observability, error handling, and performance tuning.
 

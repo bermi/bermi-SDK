@@ -6,29 +6,20 @@
 
 ### Usage
 
-#### Node.js
-
-Install with npm `npm install @bermi/lotr-sdk --save`.
-
-Import the main `lotrSdk` function and type definitions under `LotrSdk`.
-
-##### Using JavaScript
+In node.js, install with npm `npm install @bermi/lotr-sdk --save`. Then require
+it in your project with:
 
 ```javascript
 const lotrSdk = require("@bermi/lotr-sdk");
 ```
 
-##### Using Typescript
-
-Import the main `lotrSdk` function and type definitions under `LotrSdk`.
+Using TypeScript:
 
 ```typescript
 import lotrSdk, { LotrSdk } from "@bermi/lotr-sdk";
 ```
 
-#### Deno
-
-Import the main `lotrSdk` function and type definitions under `LotrSdk`.
+Using Deno:
 
 ```typescript
 import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr-sdk@v1.0.0/mod.ts";
@@ -38,15 +29,15 @@ import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr-sdk@v1.0.0/mod.ts";
 
 ```typescript
 const lotr: LotrSdk = lotrSdk({
-  apiToken: "l1bl4b", // Will default to the environmet variable LOTR_API_TOKEN
+  apiToken: "l1bl4b", // Will default to the environment variable LOTR_API_TOKEN
 });
 
-// Authenticate the session, this will be called automatically
-// if the session is not authenticated manually, but it's recommended
-// to call it manually to handle errors
+// Authenticate the session. Automatically called,
+// but it's recommended to call it manually to handle
+// authentication errors in the right context.
 await lotr.authenticate();
 
-// For list methods, the pagination options can be passed as the last argument
+// For list methods you can pass pagination options
 const options = { limit: 2, offset: 0, page: 1 };
 
 // Get a list of movies
@@ -78,7 +69,7 @@ design decisions.
 
 `lotr-sdk` has been developed using [deno 🦕](https://deno.land/).
 
-The `Makefile` includes shortcuts to commands that will help testing the project
+The `Makefile` includes shortcuts to commands that will help test the project
 and run the examples.
 
 ### Documentation
@@ -91,13 +82,13 @@ Calling `make build` will generate multiple versions of this project.
 
 ### npm
 
-The npm directory contains a node.js compatible version of the project ready to
+The npm directory contains a node.js-compatible version of the project ready to
 be pushed to npm. You can use `make npm-publish` to publish the latest version.
 
 ### cli
 
 The directory deno_dir/dist/binaries/ contains standalone binary versions of the
-program for Linux, MacOS and Windows.
+program for Linux, MacOS, and Windows.
 
 ### deno
 
@@ -108,7 +99,7 @@ Use <https://deno.land/add_module> to expose this project on
 
 ![tests](https://github.com/bermi/bermi-SDK/actions/workflows/deno.yml/badge.svg)
 
-To run the tests, call
+To run the tests, call:
 
 ```shell
 make test
