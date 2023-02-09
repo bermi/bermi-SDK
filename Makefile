@@ -1,5 +1,5 @@
 export DENO_DIR = ./deno_dir
-IGNORED_DIRS=deno_dir,npm
+IGNORED_DIRS=deno_dir,npm,examples
 ALLOWED_ENV_VARS=LOTR_API_VERSION,LOTR_API_ENDPOINT,LOTR_API_TOKEN,DEBUG
 ALLOWED_NET=the-one-api.dev
 
@@ -49,14 +49,14 @@ repl:
 	deno repl --lock=lock.json --unstable  --allow-none
 
 clean:
-	rm -rf deno_dir/gen deno_dir/dl deno_dir/dist coverage npm
+	rm -rf deno_dir/gen deno_dir/dl deno_dir/dist coverage npm examples/*/node_modules
 
 .PHONY: npm
 npm:
 	deno run -A scripts/build_npm.ts
 
 npm-publish: npm
-	cd npm && npm test && npm publish
+	cd npm && npm test && npm publish --access public
 
 test: format lint .git/hooks/pre-commit
 	deno test \
@@ -81,12 +81,15 @@ test-cached-deps: format lint lock.json
 		--unstable \
 		--ignore=$(IGNORED_DIRS)
 
-EXAMPLES=$(wildcard examples/*.ts)
-run-examples: $(EXAMPLES)
+DENO_EXAMPLES=$(wildcard examples/*.ts)
+run-deno-examples: $(DENO_EXAMPLES)
 	for example in $^ ; do \
 		echo "Running $${example}"; \
 		deno run --unstable $${example} ; \
 	done
+
+run-examples: run-deno-examples
+	cd examples/nodejs/ && npm install && node index.js
 
 docs:
 	deno doc mod.ts

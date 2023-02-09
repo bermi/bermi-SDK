@@ -10,7 +10,7 @@ In node.js, install with npm `npm install @bermi/lotr-sdk --save`. Then require
 it in your project with:
 
 ```javascript
-const lotrSdk = require("@bermi/lotr-sdk");
+const lotrSdk = require("@bermi/lotr-sdk").default;
 ```
 
 Using TypeScript:
@@ -22,7 +22,7 @@ import lotrSdk, { LotrSdk } from "@bermi/lotr-sdk";
 Using Deno:
 
 ```typescript
-import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr-sdk@v1.0.0/mod.ts";
+import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr-sdk@v1.0.1/mod.ts";
 ```
 
 ### Example

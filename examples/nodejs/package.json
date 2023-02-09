@@ -1,0 +1,12 @@
+{
+  "name": "lotr-sdk-node-example",
+  "version": "1.0.0",
+  "description": "Example for using the LOTR SDK in Node.js",
+  "main": "index.js",
+  "private": true,
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "@bermi/lotr-sdk": "^1.0.0"
+  }
+}

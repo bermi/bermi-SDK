@@ -4,4 +4,6 @@
 .vscode/targets.log
 coverage
 deno_dir
+examples/*/package-lock.json
+node_modules
 npm
