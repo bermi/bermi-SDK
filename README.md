@@ -22,7 +22,7 @@ import lotrSdk, { LotrSdk } from "@bermi/lotr-sdk";
 Using Deno:
 
 ```typescript
-import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr-sdk@v1.0.1/mod.ts";
+import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr@v1.0.2/mod.ts";
 ```
 
 ### Example
@@ -93,7 +93,7 @@ program for Linux, MacOS, and Windows.
 ### deno
 
 Use <https://deno.land/add_module> to expose this project on
-<https://deno.land/x/lotr-sdk>
+<https://deno.land/x/lotr>
 
 ## Tests
 

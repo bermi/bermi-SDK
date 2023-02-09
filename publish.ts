@@ -6,8 +6,8 @@ export async function prepublish(version: string) {
   await Deno.writeTextFile(
     "./README.md",
     readme.replace(
-      /\/\/deno\.land\/x\/lotr-sdk@v[\d\.]+\//,
-      `//deno.land/x/lotr-sdk@v${version}/`,
+      /\/\/deno\.land\/x\/lotr@v[\d\.]+\//,
+      `//deno.land/x/lotr@v${version}/`,
     ),
   );
 }

@@ -69,7 +69,7 @@ import lotrSdk, {
   PaginationOptions,
   Quote,
   QuotesResponse,
-} from "https://deno.land/x/lotr-sdk/mod.ts";
+} from "https://deno.land/x/lotr/mod.ts";
 
 const lotr: LotrSdk = lotrSdk({ apiToken: "l1bl4b" });
 
