@@ -1,6 +1,9 @@
 # lotr-sdk
 
-[`lotr-sdk`](https://github.com/bermi/bermi-SDK) The Lord of the Rings SDK
+🧙‍♂️ [`lotr-sdk`](https://github.com/bermi/bermi-SDK) The Lord of the Rings SDK
+
+Available via [npm for node.js](https://www.npmjs.com/package/@bermi/lotr-sdk),
+[deno 🦕](https://deno.land/x/lotr).
 
 ## Documentation
 

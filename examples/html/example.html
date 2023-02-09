@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Lord of the Ring SDK</title>
+  <!-- simple minimalistic swiss styling -->
+  <style type="text/css">
+    body {
+      font-family: sans-serif;
+    }
+
+    h1 {
+      font-size: 2em;
+      font-weight: bold;
+    }
+
+    pre {
+      font-family: monospace;
+      white-space: pre-wrap;
+      width: 80%;
+      height: 15em;
+      border: 1px solid grey;
+      padding: 1em;
+    }
+    button {
+      display: inline;
+      margin: 1em 0;
+    }
+
+    .warning {
+      color: red;
+    }
+  </style>
+
+</html>
+
+<body>
+  <h1>Using the SDK from the browser</h1>
+  <p class="warning">
+    WIP: https://cdn.jsdelivr.net/npm/@bermi/lotr-sdk@1.0.0/esm/_dnt.shims.js
+    export { Deno } from "@deno/shim-deno"; is not being properly transpiled
+  </p>
+
+  <p>View the source of this page for a simple working example.</p>
+
+  <fieldset>
+    <legend>Token</legend>
+    <p>
+      You can get a token from <a href="https://the-one-api.dev/">https://the-one-api.dev/</a>
+    </p>
+    LOTR_API_TOKEN: <input type="text" id="token" />
+  </fieldset>
+
+  <button id="randomQuote">Get a random quote</button>
+  <button id="listMovies">Get a random character</button>
+
+  <p>Output:
+  <pre id="result">Please enter a valid token.</pre>
+  </p>
+
+  <script type="module">
+    import * as lotrModule from "https://cdn.jsdelivr.net/npm/@bermi/lotr-sdk@1.0.0/esm/mod.js";
+
+    const lotrSdk = lotrModule.default;
+    const randomQuote = document.getElementById('randomQuote');
+    const listMovies = document.getElementById('listMovies');
+    const token = document.getElementById('token');
+
+    let lotr = lotrSdk();
+    token.addEventListener('change', () => {
+      lotr = lotrSdk({
+        apiToken: token.value,
+      });
+      lotr.authenticate().then(() => {
+        result.innerText = 'Authenticated';
+      });
+    });
+
+    randomQuote.addEventListener('click', () => {
+      const offset = Math.floor(Math.random() * 100);
+      lotr.listMovieQuotes("5cd95395de30eff6ebccde5b", { limit: 1, offset, page: 1 })
+        .then((res) => {
+          result.innerText = res.docs[0].dialog;
+        });
+    });
+
+    listMovies.addEventListener('click', () => {
+      lotr.listMovies().then((res) => {
+        const movies = res.docs.map((res) => res.name).join("\n - ");
+        result.innerText = `The The Lord of the Rings Movies:\n\n - ${movies}\n`;
+      });
+    });
+  </script>
+</body>
