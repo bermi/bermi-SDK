@@ -1,7 +1,7 @@
 import { Options } from "../types.ts";
 
 export const defaultOptions: Options = {
-  key: "value"
+  key: "value",
 };
 
 export const run = (

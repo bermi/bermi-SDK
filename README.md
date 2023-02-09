@@ -12,8 +12,7 @@
 
 Install with npm `npm install @bermi/lotr-sdk --save`.
 
-Import the main `lotrSdk` function and type definitions under
-`LotrSdk`.
+Import the main `lotrSdk` function and type definitions under `LotrSdk`.
 
 ##### Using JavaScript
 
@@ -23,19 +22,15 @@ const lotrSdk = require("@bermi/lotr-sdk");
 
 ##### Using Typescript
 
-Import the main `lotrSdk` function and type definitions under
-`LotrSdk`.
-
+Import the main `lotrSdk` function and type definitions under `LotrSdk`.
 
 ```typescript
-import lotrSdk, { LotrSdk } from "@bermi/lotr-sdk"
+import lotrSdk, { LotrSdk } from "@bermi/lotr-sdk";
 ```
-
 
 #### Deno
 
-Import the main `lotrSdk` function and type definitions under
-`LotrSdk`.
+Import the main `lotrSdk` function and type definitions under `LotrSdk`.
 
 ```typescript
 import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr-sdk@v1.0.0/mod.ts";
@@ -64,14 +59,13 @@ Calling `make build` will generate multiple versions of this project.
 
 ### npm
 
-The npm directory contains a node.js compatible version of the project ready
-to be pushed to npm. You can use `make npm-publish` to publish the
-latest version.
+The npm directory contains a node.js compatible version of the project ready to
+be pushed to npm. You can use `make npm-publish` to publish the latest version.
 
 ### cli
 
-The directory deno_dir/dist/binaries/ contains standalone binary versions
-of the program for Linux, MacOS and Windows.
+The directory deno_dir/dist/binaries/ contains standalone binary versions of the
+program for Linux, MacOS and Windows.
 
 ### deno
 

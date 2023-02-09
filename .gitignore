@@ -3,8 +3,5 @@
 .vscode/dryrun.log
 .vscode/targets.log
 coverage
-deno_dir/dist
-deno_dir/dl
-deno_dir/gen
-deno_dir/*_cache_*
+deno_dir
 npm

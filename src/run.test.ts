@@ -3,7 +3,7 @@ import {
   assert,
   assertEquals,
 } from "https://deno.land/std@0.177.0/testing/asserts.ts";
-import { run, defaultOptions } from "./run.ts";
+import { defaultOptions, run } from "./run.ts";
 
 Deno.test("run", () => {
   // // Use stubs to override methods
