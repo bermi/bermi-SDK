@@ -1,0 +1,20 @@
+{
+  "name": "bermi/lotr-sdk",
+  "build": {
+    "context": "./../",
+    "dockerfile": "./Dockerfile.ubuntu",
+    "cacheFrom": ["bermi/lotr-sdk:latest"]
+  },
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "extensions": [
+    "github.copilot",
+    "denoland.vscode-deno"
+  ],
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "1gb",
+    "storage": "2gb"
+  }
+}
