@@ -4,6 +4,7 @@ import {
   assertStrictEquals,
   assertThrows,
 } from "https://deno.land/std/testing/asserts.ts";
+import { LotrCollectionResponse } from "../types.ts";
 import { createApiSession, defaultOptions } from "./session.ts";
 
 const apiToken = Deno.env.get("LOTR_API_TOKEN") || "";
@@ -48,7 +49,10 @@ if (
     const session = createApiSession({
       apiToken,
     });
-    const result = await session.get("/movie", { offset: 1, limit: 3 });
+    const result = await session.get("/movie", {
+      offset: 1,
+      limit: 3,
+    }) as LotrCollectionResponse;
     // Expect the response to be a valid Lotr response object
     assertStrictEquals(typeof result.docs, "object");
     assertEquals({
@@ -60,6 +64,6 @@ if (
       limit: result.limit,
       offset: result.offset,
     });
-    assert(result.docs.length > 0);
+    assert((result.docs || []).length > 0);
   });
 }

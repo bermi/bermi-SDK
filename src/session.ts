@@ -1,5 +1,6 @@
 import type {
-  LotrResponse,
+  LotrCollectionResponse,
+  LotrDocumentResponse,
   QueryParameters,
   RequestOptions,
   SdkOptions,
@@ -39,7 +40,7 @@ const getUrl = (
 
 export const createApiSession = (
   options: SdkOptions,
-): SdkSession<LotrResponse> | never => {
+): SdkSession<LotrCollectionResponse | LotrDocumentResponse> | never => {
   const { apiVersion, apiEndpoint, apiToken } = {
     ...defaultOptions,
     ...options,
@@ -65,7 +66,7 @@ export const createApiSession = (
       options: RequestOptions = {
         headers,
       },
-    ): Promise<LotrResponse> => {
+    ): Promise<LotrCollectionResponse | LotrDocumentResponse> => {
       const url = getUrl(
         `${baseUrl}/${path.replace(LEADING_SLASH_RE, "")}`,
         params,
@@ -82,7 +83,7 @@ export const createApiSession = (
           `Request failed with status code ${response.status}`,
         );
       }
-      return (await response.json()) as LotrResponse;
+      return (await response.json()) as LotrCollectionResponse;
     },
     logger,
   };

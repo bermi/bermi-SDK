@@ -174,7 +174,7 @@ export type QuotesResponse = ApiResponse<Quote>;
 
 /**
  * Defines the structure of a response from the API that includes multiple documents of different types.
- * @typedef {Object} LotrResponse
+ * @typedef {Object} LotrCollectionResponse
  * @property {MoviesResponse} docs - An array of movies returned from the API.
  * @property {QuotesResponse} docs - An array of quotes returned from the API.
  * @property {number} limit - The maximum number of documents returned on a single response.
@@ -183,4 +183,8 @@ export type QuotesResponse = ApiResponse<Quote>;
  * @property {number} pages - The total number of pages of documents.
  * @property {number} total - The total number of documents.
  */
-export type LotrResponse = MoviesResponse | QuotesResponse;
+export type LotrCollectionResponse =
+  & Partial<MoviesResponse>
+  & Partial<QuotesResponse>;
+
+export type LotrDocumentResponse = Partial<Movie> & Partial<Quote>;
