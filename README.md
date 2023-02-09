@@ -37,22 +37,26 @@ import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr-sdk@v1.0.0/mod.ts";
 ### Example
 
 ```typescript
-const lotr: LotrSdk = lotrSdk({ apiToken: "l1bl4b" });
+const lotr: LotrSdk = lotrSdk({
+  apiToken: "l1bl4b", // Will default to the environmet variable LOTR_API_TOKEN
+});
 
-// Authenticate the session
+// Authenticate the session, this will be called automatically
+// if the session is not authenticated manually, but it's recommended
+// to call it manually to handle errors
 await lotr.authenticate();
 
 // For list methods, the pagination options can be passed as the last argument
-const options: PaginationOptions = { limit: 2, offset: 0, page: 1 };
+const options = { limit: 2, offset: 0, page: 1 };
 
 // Get a list of movies
-const movies: Movie[] = await lotr.listMovies(); // => { docs: [{ _id: "123", name: "The Fellowship of the Ring" }], ... }
+const movies = await lotr.listMovies(); // => { docs: [{ _id: "123", name: "The Fellowship of the Ring" }], ... }
 
 // Get a movie by id
-const movie: MoviesResponse = await lotr.getMovie("123"); // => { _id: "123", name: "The Fellowship of the Ring" }
+const movie = await lotr.getMovie("123"); // => { _id: "123", name: "The Fellowship of the Ring" }
 
 // Get a list of quotes for a movie
-const quotes: QuotesResponse = await lotr.listMovieQuotes("123"); // => { docs: [{ _id: "456", character: "789", dialog: "You shall not pass!" }], ... }
+const quotes = await lotr.listMovieQuotes("123"); // => { docs: [{ _id: "456", character: "789", dialog: "You shall not pass!" }], ... }
 ```
 
 ## Examples

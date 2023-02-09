@@ -11,7 +11,10 @@ jobs:
       - uses: denolib/setup-deno@v2
         with:
           deno-version: v1.x
-      - run: |
+      - name: Run tests
+        env:
+          LOTR_API_TOKEN: "${{ secrets.LOTR_API_TOKEN }}"
+        run: |
           deno --version
           deno fmt --ignore=deno_dir --check
           DEBUG=true deno test --lock=lock.json --allow-none --allow-env --unstable
