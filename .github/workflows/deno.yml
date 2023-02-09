@@ -14,4 +14,5 @@ jobs:
       - run: |
           deno --version
           deno fmt --ignore=deno_dir --check
-          deno test --lock=lock.json --allow-none --unstable
+          DEBUG=true deno test --lock=lock.json --allow-none --allow-env --unstable
+          DEBUG=true RUN_INTEGRATION_TESTS=true deno test --lock=lock.json --allow-none --allow-env --unstable  --allow-net
