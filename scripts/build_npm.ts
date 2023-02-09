@@ -6,8 +6,10 @@ await emptyDir("./npm");
 await build({
   entryPoints: ["./mod.ts"],
   outDir: "./npm",
+  // scriptMode: true,
   shims: {
     deno: "dev",
+    undici: true, // Add support for fetch and other browser APIs
     // timers: true,
     // domException: "dev",
   },
@@ -16,6 +18,10 @@ await build({
     version: VERSION,
     description: "The Lord of the Rings SDK",
     license: "MIT",
+    engines: {
+      node: ">=18.0.0",
+      npm: ">=9.4.0",
+    },
     repository: {
       type: "git",
       url: "git+https://github.com/bermi/bermi-SDK.git",

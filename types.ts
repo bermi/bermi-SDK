@@ -25,14 +25,30 @@ export interface LotrSdk {
 /**
  * A configuration object for the SDK.
  * @typedef {Object} SdkOptions
- * @property {string} apiEndpoint - The base endpoint for the API.
- * @property {string} apiVersion - The version of the API to use.
+ * @property {string} apiEndpoint - The base endpoint for the API. Defaults to https://the-one-api.dev.
+ * @property {string} apiVersion - The version of the API to use. Defaults to v2.
  * @property {string} apiToken - The API access token.
  */
 export interface SdkOptions {
-  apiEndpoint: string;
-  apiVersion: string;
+  apiEndpoint?: string;
+  apiVersion?: string;
   apiToken: string;
+  logger?: Logger;
+}
+
+/**
+ * A logger object for logging messages.
+ * @typedef {Object} Logger
+ * @property {Function} debug - Logs a debug message.
+ * @property {Function} error - Logs an error message.
+ * @property {Function} info - Logs an info message.
+ * @property {Function} warn - Logs a warning message.
+ */
+export interface Logger {
+  debug: (message: string) => void;
+  error: (message: string) => void;
+  info: (message: string) => void;
+  warn: (message: string) => void;
 }
 
 /**
@@ -60,9 +76,10 @@ export interface RequestOptions {
 export interface SdkSession<T> {
   get: (
     path: string,
-    params: QueryParameters,
+    params?: QueryParameters,
     options?: RequestOptions,
   ) => Promise<T>;
+  logger: Logger;
 }
 
 /**
@@ -140,8 +157,8 @@ interface ApiResponse<T> {
   docs: T[];
   limit: number;
   offset: number;
-  page: number;
-  pages: number;
+  page?: number;
+  pages?: number;
   total: number;
 }
 
@@ -154,3 +171,16 @@ export type MoviesResponse = ApiResponse<Movie>;
  * Defines the structure of a response from the API that includes multiple movie quotes.
  */
 export type QuotesResponse = ApiResponse<Quote>;
+
+/**
+ * Defines the structure of a response from the API that includes multiple documents of different types.
+ * @typedef {Object} LotrResponse
+ * @property {MoviesResponse} docs - An array of movies returned from the API.
+ * @property {QuotesResponse} docs - An array of quotes returned from the API.
+ * @property {number} limit - The maximum number of documents returned on a single response.
+ * @property {number} offset - The number of documents skipped in the current response.
+ * @property {number} page - The current page of documents returned in the response.
+ * @property {number} pages - The total number of pages of documents.
+ * @property {number} total - The total number of documents.
+ */
+export type LotrResponse = MoviesResponse | QuotesResponse;

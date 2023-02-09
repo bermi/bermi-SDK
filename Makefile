@@ -1,5 +1,7 @@
 export DENO_DIR = ./deno_dir
 IGNORED_DIRS=deno_dir,npm
+ALLOWED_ENV_VARS=LOTR_API_VERSION,LOTR_API_ENDPOINT,LOTR_API_TOKEN,DEBUG
+ALLOWED_NET=the-one-api.dev
 
 all: build
 
@@ -58,6 +60,15 @@ npm-publish: npm
 
 test: format lint .git/hooks/pre-commit
 	deno test \
+		--allow-env=$(ALLOWED_ENV_VARS),RUN_INTEGRATION_TESTS \
+		--allow-none \
+		--unstable \
+		--ignore=$(IGNORED_DIRS)
+
+test-integration: format lint .git/hooks/pre-commit
+	RUN_INTEGRATION_TESTS=true deno test \
+		--allow-env=$(ALLOWED_ENV_VARS),RUN_INTEGRATION_TESTS  \
+		--allow-net=$(ALLOWED_NET) \
 		--allow-none \
 		--unstable \
 		--ignore=$(IGNORED_DIRS)

@@ -34,6 +34,9 @@ By using Deno we can:
 - Release dependency-free single binary CLI versions of the sdk for Windows,
   MacOS and Linux.
 - Enforce formatting and linting rules using `deno fmt` and `deno lint`.
+- Leverage the
+  [secure-by-default design of Deno](https://deno.land/manual@v1.28.3/basics/permissions)
+  to avoid common security vulnerabilities.
 
 ## Architecture
 
@@ -100,7 +103,7 @@ The SDK will provide a `authenticate` method that will be called automatically
 if the session is not authenticated. This method will store the token in the
 session and will be used for all subsequent requests. The token can be provided
 through the `apiToken` option when creating the session or by setting the
-`LOTR_API_TOKEN` environment variable.
+`LOTR_LOTR_API_TOKEN` environment variable.
 
 Supporting other authentication mechanisms, such as a file or a third-party
 secret manager, can be added when needed without breaking the API interface.
@@ -131,11 +134,10 @@ implemented on this prototype.
 
 ## Discussion
 
-The listMovieQuotes method requires returns the primary key for the character.
-Right now given the limited scope of the API, this doesn't represent an issue
-but as soon as we expose the `/character` endpoint, users of the SDK could
-benefit from optional memoization to avoid making unnecessary requests (n+1
-queries).
+The `listMovieQuotes` method returns the primary key for the character. Right
+now given the limited scope of the API, this doesn't represent an issue but as
+soon as we expose the `/character` endpoint, users of the SDK could benefit from
+optional memoization to avoid making unnecessary requests (n+1 queries).
 
 The API is rate limited to 100 requests per 10 minutes. The SDK should provide a
 way to inspect the headers X-RateLimit-Limit, X-RateLimit-Remaining, and
@@ -151,6 +153,9 @@ by adding a `cache` option to the session that would be used to store the ETag.
 An OpenAPI specification for the API could be used to validate the API responses
 and automatically generate the TypeScript interfaces and source code when adding
 new entities.
+
+Other missing features include logging, observability (OpenTelemetry), older
+versions of node.js and npm, and API response validation.
 
 ## Conclusion
 
