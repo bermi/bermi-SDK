@@ -18,10 +18,10 @@ await build({
     license: "MIT",
     repository: {
       type: "git",
-      url: "git+https://github.com/bermi/lotr-sdk.git",
+      url: "git+https://github.com/bermi/bermi-SDK.git",
     },
     bugs: {
-      url: "https://github.com/bermi/lotr-sdk/issues",
+      url: "https://github.com/bermi/bermi-SDK/issues",
     },
   },
 });

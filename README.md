@@ -1,10 +1,8 @@
 # lotr-sdk
 
-[`lotr-sdk`](https://github.com/bermi/lotr-sdk) The Lord of the Rings SDK
+[`lotr-sdk`](https://github.com/bermi/bermi-SDK) The Lord of the Rings SDK
 
 ## Documentation
-
-[![](https://mermaid.ink/img/pako:eNptkctOAzEMRX8l8gpE5wciNoi2EgtW3aGRkCdxp9bkAXmogtJ_JzNlQmnJyj72tW7sAyivCSQogzEuGfuAtnWivAfHFo24_2oascxquKZrjrtr-kJdwD9Yijt2SWBPl3iTArte9OQ0hfPiKInPaEt4c3tRsJhohpPtyd7hBEQd2hEOj974UAtxz3YWlvQ9oxrm_Hg-b_xYndeM3iN_0pNbE6WKFboVpn_10wp-DXXeG8Hxdc9GVxiyq1pYgKVgkXW5xKRrIe3IUguyhJq2mE1qoXVja37TZQMrzckHkFs0kRaAOfnNh1MgU8g0N_0c9ASP30tCl_M?type=png)](https://mermaid.live/edit#pako:eNptkctOAzEMRX8l8gpE5wciNoi2EgtW3aGRkCdxp9bkAXmogtJ_JzNlQmnJyj72tW7sAyivCSQogzEuGfuAtnWivAfHFo24_2oascxquKZrjrtr-kJdwD9Yijt2SWBPl3iTArte9OQ0hfPiKInPaEt4c3tRsJhohpPtyd7hBEQd2hEOj974UAtxz3YWlvQ9oxrm_Hg-b_xYndeM3iN_0pNbE6WKFboVpn_10wp-DXXeG8Hxdc9GVxiyq1pYgKVgkXW5xKRrIe3IUguyhJq2mE1qoXVja37TZQMrzckHkFs0kRaAOfnNh1MgU8g0N_0c9ASP30tCl_M)
 
 ### Usage
 
@@ -46,6 +44,11 @@ To run all the examples, call:
 make run-examples
 ```
 
+### Design decisions
+
+Please read the [design document](./design.md) for more information about the
+design decisions.
+
 ## Development
 
 `lotr-sdk` has been developed using [deno 🦕](https://deno.land/).
@@ -69,12 +72,12 @@ program for Linux, MacOS and Windows.
 
 ### deno
 
-Use https://deno.land/add_module to expose this project on
-https://deno.land/x/lotr-sdk
+Use <https://deno.land/add_module> to expose this project on
+<https://deno.land/x/lotr-sdk>
 
 ## Tests
 
-![tests](https://github.com/bermi/lotr-sdk/actions/workflows/deno.yml/badge.svg)
+![tests](https://github.com/bermi/bermi-SDK/actions/workflows/deno.yml/badge.svg)
 
 To run the tests, call
 
