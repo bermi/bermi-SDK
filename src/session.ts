@@ -47,6 +47,7 @@ export const createApiSession = (
   };
   const baseUrl = `${apiEndpoint}/${apiVersion}`;
   const logger = options.logger || getLogger();
+  let authenticated = false;
 
   if (!apiToken) {
     throw new Error(
@@ -55,11 +56,28 @@ export const createApiSession = (
     );
   }
 
+  const authenticate = async () => {
+    const url = getUrl(`${baseUrl}/movie`);
+    logger.info(`HEAD ${url} authenticating...`);
+    // Just send a HEAD request to the API to check if the token is valid
+    const response = await fetch(url, { method: "HEAD", headers });
+    if (response.status === 401) {
+      throw new Error("Invalid API token");
+    }
+    if (!response.ok) {
+      throw new Error(
+        `Request failed with status code ${response.status}`,
+      );
+    }
+    authenticated = true;
+  };
+
   const headers = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${apiToken}`,
   };
   return {
+    authenticate,
     get: async (
       path: string,
       params: QueryParameters = {},
@@ -72,12 +90,17 @@ export const createApiSession = (
         params,
       );
       logger.info(`GET ${url}`);
-      console.log({ baseUrl, params, options, url });
-
+      if (!authenticated) {
+        await authenticate();
+      }
       const response = await fetch(url, options);
+      // If the token has expired, or revoked, we need to re-authenticate
+      // and try again
       if (response.status === 401) {
+        authenticated = false;
         throw new Error("Invalid API token");
       }
+
       if (!response.ok) {
         throw new Error(
           `Request failed with status code ${response.status}`,

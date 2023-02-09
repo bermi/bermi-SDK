@@ -2,23 +2,17 @@
  * The Lord of the Rings SDK.
  * @typedef {Object} LotrSdk
  * @property {Function} authenticate - Authenticates the SDK with the API.
- * @property {Function} allMovies - Returns all movies.
- * @property {Function} allMovieQuotes - Returns all quotes for a given movie.
  * @property {Function} getMovie - Returns a movie by ID.
- * @property {Function} getMovieQuote - Returns a quote by ID.
  * @property {Function} listMovies - Returns a list of movies.
  * @property {Function} listMovieQuotes - Returns a list of quotes for a given movie.
  */
 export interface LotrSdk {
   authenticate: () => Promise<void>;
-  allMovies: () => Promise<Movie[]>;
-  allMovieQuotes: (movieId: string) => Promise<Quote[]>;
-  getMovie: (movieId: string) => Promise<Movie>;
-  getMovieQuote: (movieId: string, quoteId: string) => Promise<Quote>;
-  listMovies: (options?: PaginationOptions) => Promise<MoviesResponse>;
+  getMovie: (id: string) => Promise<Movie>;
+  listMovies: (params: QueryParameters) => Promise<MoviesResponse>;
   listMovieQuotes: (
-    movieId: string,
-    options?: PaginationOptions,
+    id: string,
+    params: QueryParameters,
   ) => Promise<QuotesResponse>;
 }
 
@@ -71,6 +65,8 @@ export interface RequestOptions {
  * A session object for interacting with the API.
  * @typedef {Object} SdkSession
  * @property {Function} get - Makes a GET request to the API.
+ * @property {Function} authenticate - Authenticates the session with the API.
+ * @property {Logger} logger - A logger object for logging messages.
  * @typeParam T  - The type of the response.
  */
 export interface SdkSession<T> {
@@ -79,6 +75,7 @@ export interface SdkSession<T> {
     params?: QueryParameters,
     options?: RequestOptions,
   ) => Promise<T>;
+  authenticate?: () => Promise<void>;
   logger: Logger;
 }
 

@@ -34,6 +34,27 @@ Import the main `lotrSdk` function and type definitions under `LotrSdk`.
 import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr-sdk@v1.0.0/mod.ts";
 ```
 
+### Example
+
+```typescript
+const lotr: LotrSdk = lotrSdk({ apiToken: "l1bl4b" });
+
+// Authenticate the session
+await lotr.authenticate();
+
+// For list methods, the pagination options can be passed as the last argument
+const options: PaginationOptions = { limit: 2, offset: 0, page: 1 };
+
+// Get a list of movies
+const movies: Movie[] = await lotr.listMovies(); // => { docs: [{ _id: "123", name: "The Fellowship of the Ring" }], ... }
+
+// Get a movie by id
+const movie: MoviesResponse = await lotr.getMovie("123"); // => { _id: "123", name: "The Fellowship of the Ring" }
+
+// Get a list of quotes for a movie
+const quotes: QuotesResponse = await lotr.listMovieQuotes("123"); // => { docs: [{ _id: "456", character: "789", dialog: "You shall not pass!" }], ... }
+```
+
 ## Examples
 
 The directory `./examples` contains examples showing how to use this library.
@@ -55,6 +76,10 @@ design decisions.
 
 The `Makefile` includes shortcuts to commands that will help testing the project
 and run the examples.
+
+### Documentation
+
+The command `deno doc mod.ts` will show the documentation for the project.
 
 ## Releasing
 

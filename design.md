@@ -87,11 +87,6 @@ const movie: MoviesResponse = await lotr.getMovie("123"); // => { _id: "123", na
 
 // Get a list of quotes for a movie
 const quotes: QuotesResponse = await lotr.listMovieQuotes("123"); // => { docs: [{ _id: "456", character: "789", dialog: "You shall not pass!" }], ... }
-
-// The following convenience methods are also available to avoid having to
-// pass the pagination options.
-const allMovies: Movie[] = await lotr.allMovies();
-const allQuotes: Quote[] = await lotr.allMovieQuotes("123");
 ```
 
 ### Authentication
@@ -110,10 +105,16 @@ secret manager, can be added when needed without breaking the API interface.
 
 ### Pagination
 
-The LOTR API uses a simple pagination mechanism to return a list of results. The
-sdkSession will provide a `fetchAll` method that will return a list of all the
-results for a given resource. The `fetchAll` method will be used internally by
-the `allMovies` and `allMovieQuotes` methods.
+The LOTR API uses a simple pagination mechanism to return a list of results.
+
+At this time the parameters required by the SDK are the same as the ones
+required by the API.
+
+In the future a `fetchAll` method could return a list of all the results for a
+given resource. The `fetchAll` method could be used internally to implement
+`allMovies` and `allMovieQuotes` methods. While this seems an antipattern, the
+domain for Lord of the Rings is small enough that this would not be a problem as
+long as caching is implemented.
 
 ### Caching
 
@@ -125,6 +126,11 @@ provide any caching mechanism.
 We can explore using the
 [`Cache` API](https://developer.mozilla.org/en-US/docs/Web/API/Cache) in the
 future to provide caching capabilities.
+
+The `src/sdk.ts` file creates a closure for each SDK instance that can be used
+for memoization. Given the write-once read-many nature of the LOTR data set, a
+global LRU cache across instances would improve latency by reducing network
+calls to the originating API.
 
 ### Rate limiting
 

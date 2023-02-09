@@ -8,7 +8,7 @@ await build({
   outDir: "./npm",
   // scriptMode: true,
   shims: {
-    deno: "dev",
+    deno: true,
     undici: true, // Add support for fetch and other browser APIs
     // timers: true,
     // domException: "dev",

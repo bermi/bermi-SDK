@@ -30,8 +30,7 @@ export const listMovies = (session: SdkSession<MoviesResponse>) =>
 export const getMovie = (session: SdkSession<Movie>) =>
 (
   id: string,
-  params: QueryParameters = {},
-): Promise<Movie> => session.get(`/movie/${id}`, params);
+): Promise<Movie> => session.get(`/movie/${id}`);
 
 /**
  * Request all movie quotes for one specific movie (only working for the LotR trilogy)
@@ -56,4 +55,10 @@ async (
     { ...doc, id: undefined }
   ));
   return quotesResponse;
+};
+
+export default {
+  getMovie,
+  listMovieQuotes,
+  listMovies,
 };

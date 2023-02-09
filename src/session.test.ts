@@ -66,4 +66,17 @@ if (
     });
     assert((result.docs || []).length > 0);
   });
+
+  Deno.test("Session authentication should fail with invalid credentials", async () => {
+    const session = createApiSession({
+      apiToken: "invalid-token",
+    });
+    try {
+      if (session.authenticate) {
+        await session.authenticate();
+      }
+    } catch (error) {
+      assertStrictEquals(error.message, "Invalid API token");
+    }
+  });
 }

@@ -88,6 +88,9 @@ run-examples: $(EXAMPLES)
 		deno run --unstable $${example} ; \
 	done
 
+docs:
+	deno doc mod.ts
+
 coverage: clean test
 	deno test --coverage=coverage --unstable
 	deno coverage --lcov --unstable coverage/ > coverage/coverage.lcov
