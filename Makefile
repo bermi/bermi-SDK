@@ -35,6 +35,7 @@ lock.json: src/deps.ts
 
 format:
 	deno fmt --ignore=$(IGNORED_DIRS)
+	deno fmt examples/deno
 
 lint:
 	deno lint --unstable --ignore=$(IGNORED_DIRS)
@@ -94,7 +95,7 @@ coverage: clean test
 	genhtml -o coverage/html coverage/coverage.lcov
 	open coverage/html/index.html
 
-pre-commit: clean lock.json test build
+pre-commit: clean lock.json format test build
 
 .git/hooks/pre-commit:
 	mkdir -p $(@D)
