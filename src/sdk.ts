@@ -32,21 +32,26 @@
  */
 
 import type {
+  LotrCollectionResponse,
+  LotrDocumentResponse,
   LotrSdk,
   Movie,
   MoviesResponse,
   QueryParameters,
   QuotesResponse,
   SdkOptions,
-  SdkSession
+  SdkSession,
 } from "../types.ts";
 import movie from "./movie.ts";
 import { createApiSession } from "./session.ts";
 
-export default (options: SdkOptions = {
-  apiToken: Deno.env.get("LOTR_API_TOKEN") || "",
-}): LotrSdk => {
-  const session = createApiSession(options);
+export default (
+  options: SdkOptions = {
+    apiToken: Deno.env.get("LOTR_API_TOKEN") || "",
+  },
+): LotrSdk => {
+  const session: SdkSession<LotrCollectionResponse | LotrDocumentResponse> =
+    options.session || createApiSession(options);
 
   // The public SDK api methods are defined here
   // We can use this closure to memoize results and use them

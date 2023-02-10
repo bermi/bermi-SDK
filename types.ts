@@ -16,6 +16,10 @@ export interface LotrSdk {
     params: QueryParameters,
   ) => Promise<QuotesResponse>;
   allMovies: (params: QueryParameters) => AsyncGenerator<Movie, void, unknown>;
+  // allMovieQuotes: (
+  //   id: string,
+  //   params: QueryParameters,
+  // ) => AsyncGenerator<Quote, void, unknown>;
 }
 
 /**
@@ -30,6 +34,7 @@ export interface SdkOptions {
   apiVersion?: string;
   apiToken: string;
   logger?: Logger;
+  session?: SdkSession<LotrCollectionResponse | LotrDocumentResponse>;
 }
 
 /**
@@ -232,7 +237,7 @@ export type QuotesResponse = ApiResponse<Quote>;
  * @property {number} total - The total number of documents.
  */
 export type LotrCollectionResponse =
-  & Partial<MoviesResponse>
-  & Partial<QuotesResponse>;
+  | Partial<MoviesResponse>
+  | Partial<QuotesResponse>;
 
-export type LotrDocumentResponse = Partial<Movie> & Partial<Quote>;
+export type LotrDocumentResponse = Partial<Movie> | Partial<Quote>;
