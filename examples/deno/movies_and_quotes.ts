@@ -1,7 +1,7 @@
 import lotrSdk, {
   LotrSdk,
   MoviesResponse,
-  QuotesResponse
+  QuotesResponse,
 } from "https://deno.land/x/lotr@v1.1.0/mod.ts";
 
 // import lotrSdk, { LotrSdk, MoviesResponse, QuotesResponse } from "../../mod.ts";
