@@ -5,7 +5,8 @@
  * @property {Function} getMovie - Returns a movie by ID.
  * @property {Function} listMovies - Returns a list of movies.
  * @property {Function} listMovieQuotes - Returns a list of quotes for a given movie.
- * @property {Function} allMovies - Returns an async generator for a list of movies.
+ * @property {Function} allMovies - Returns an async iterator for a list of movies.
+ * @property {Function} allMovieQuotes - Returns an async iterator for a list of quotes for a given movie.
  */
 export interface LotrSdk {
   authenticate: () => Promise<void>;
@@ -16,10 +17,10 @@ export interface LotrSdk {
     params: QueryParameters,
   ) => Promise<QuotesResponse>;
   allMovies: (params: QueryParameters) => AsyncGenerator<Movie, void, unknown>;
-  // allMovieQuotes: (
-  //   id: string,
-  //   params: QueryParameters,
-  // ) => AsyncGenerator<Quote, void, unknown>;
+  allMovieQuotes: (
+    id: string,
+    params: QueryParameters,
+  ) => AsyncGenerator<Quote, void, unknown>;
 }
 
 /**

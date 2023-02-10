@@ -4,6 +4,7 @@ import {
   LotrDocumentResponse,
   LotrSdk,
   Movie,
+  Quote,
   SdkSession,
 } from "../types.ts";
 import { getLogger } from "./logger.ts";
@@ -64,11 +65,38 @@ const moviesPageTwo: LotrCollectionResponse = {
   offset: 2,
 };
 
+const firstQuote: Quote = {
+  _id: "5cd96e05de30eff6ebcced19",
+  dialog: "They think we have the Ring.",
+  movie: "5cd95395de30eff6ebccde5b",
+  character: "5cd99d4bde30eff6ebccfe2e",
+};
+
+const secondQuote: Quote = {
+  _id: "5cd96e05de30eff6ebcced1a",
+  dialog: "Ssh!As soon as they find out we don'twe're dead.",
+  movie: "5cd95395de30eff6ebccde5b",
+  character: "5cd99d4bde30eff6ebccfc7c",
+};
+
+const movieQuotesPageOne: LotrCollectionResponse = {
+  docs: [firstQuote],
+  total: 2,
+  limit: 1,
+  offset: 1,
+};
+const movieQuotesPageTwo: LotrCollectionResponse = {
+  docs: [secondQuote],
+  total: 2,
+  limit: 1,
+  offset: 2,
+};
+
 Deno.test("should expose public API methods", () => {
   const lotr: LotrSdk = lotrSdk({ apiToken: "l1bl4b" });
   const methods = Object.keys(lotr).sort();
   const expected = [
-    // "allMovieQuotes",
+    "allMovieQuotes",
     "allMovies",
     "authenticate",
     "getMovie",
@@ -95,4 +123,23 @@ Deno.test("allMovies async iterator", async () => {
   assertEquals(movies.size, 2);
   assertEquals(movies.has(firstMovie), true);
   assertEquals(movies.has(secondMovie), true);
+});
+
+Deno.test("allMovieQuotes async iterator", async () => {
+  const lotr: LotrSdk = lotrSdk(
+    {
+      apiToken: "l1bl4b",
+      session: mockPaginationSession([
+        movieQuotesPageOne,
+        movieQuotesPageTwo,
+      ]),
+    },
+  );
+  const quotes = new Set();
+  for await (const movie of lotr.allMovies({ limit: 1 })) {
+    quotes.add(movie);
+  }
+  assertEquals(quotes.size, 2);
+  assertEquals(quotes.has(firstQuote), true);
+  assertEquals(quotes.has(secondQuote), true);
 });

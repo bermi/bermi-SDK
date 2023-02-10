@@ -89,11 +89,34 @@ export default (
     }
   }
 
+  const allMovieQuotes = async function* (
+    id: string,
+    params: QueryParameters = {},
+  ) {
+    const limit = params.limit || 1000;
+    const p = { ...params, limit, offset: 0, page: 0 };
+    let res: QuotesResponse = await listMovieQuotes(id, p);
+    if (!res.docs || !res.docs.length) return;
+    yield* res.docs;
+    let totalDocs = res.total;
+
+    // We need to keep fetching until we get all the documents
+    while (res.docs.length < totalDocs && totalDocs > 0) {
+      p.page += 1;
+      p.offset += limit;
+      res = await listMovieQuotes(id, p);
+      if (!res.docs || !res.docs.length) return;
+      yield* res.docs;
+      totalDocs -= limit;
+    }
+  };
+
   return {
     authenticate: session.authenticate || (() => Promise.resolve()),
     getMovie,
     listMovieQuotes,
     listMovies,
     allMovies,
+    allMovieQuotes,
   };
 };

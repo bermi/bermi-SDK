@@ -4,6 +4,8 @@ import lotrSdk, {
   QuotesResponse,
 } from "https://deno.land/x/lotr@v1.0.2/mod.ts";
 
+// import lotrSdk, { LotrSdk, MoviesResponse, QuotesResponse } from "../../mod.ts";
+
 const lotr: LotrSdk = lotrSdk({
   // Will default to the environment variable LOTR_API_TOKEN
   // apiToken: "l1bl4b",
@@ -32,10 +34,15 @@ console.log(
   `## 5 Random Quotes From The Lord of the Rings:\n\n - ${quotesList}\n`,
 );
 
-// You can also get a movie by id
+// // You can also get a movie by id
 // const movie = await lotr.getMovie("5cd95395de30eff6ebccde5b");
 
-// Use lotr.getAllMovies() to get all movies using an async iterator
-for await (const movie of lotr.allMovies()) {
-  console.log({ movie });
-}
+// // Use lotr.getAllMovies() to get all movies using an async iterator
+// for await (const movie of lotr.allMovies()) {
+//   console.log({ movie });
+// }
+
+// // Iterate all quotes for a movie
+// for await (const quote of lotr.allMovieQuotes("5cd95395de30eff6ebccde5b")) {
+//   console.log({ quote });
+// }

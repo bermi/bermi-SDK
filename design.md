@@ -126,8 +126,14 @@ to return all the results for a given query. This allows the user to iterate
 over the results without having to worry about pagination.
 
 ```typescript
+// Iterate all movies
 for await (const movie of lotr.allMovies()) {
   console.log({ movie });
+}
+
+// Iterate all quotes for a movie
+for await (const quote of lotr.allMovieQuotes("5cd95395de30eff6ebccde5b")) {
+  console.log({ quote });
 }
 ```
 

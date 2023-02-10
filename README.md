@@ -61,8 +61,14 @@ const quotes = await lotr.listMovieQuotes("123"); // => { docs: [{ _id: "456", c
 Use an async iterator to iterate over all the movies:
 
 ```typescript
+// Iterate all movies
 for await (const movie of lotr.allMovies()) {
   console.log({ movie });
+}
+
+// Iterate all quotes for a movie
+for await (const quote of lotr.allMovieQuotes("5cd95395de30eff6ebccde5b")) {
+  console.log({ quote });
 }
 ```
 
