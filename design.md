@@ -38,6 +38,16 @@ By using Deno we can:
   [secure-by-default design of Deno](https://deno.land/manual@v1.28.3/basics/permissions)
   to avoid common security vulnerabilities.
 
+### fetch vs axios/node-fetch/superagent
+
+The Deno runtime provides a `fetch` API compatible with the browser
+[`fetch` API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
+
+Given the limited scope of this prototype and the fact that the LOTR API uses
+non-standar URL parameters there was no benefit in using a third-party library
+to make HTTP requests for this prototype. However, caching and retry mechanisms
+can warrant using a third-party library.
+
 ## Architecture
 
 The code is structured as follows:

@@ -96,8 +96,11 @@ export interface PaginationOptions {
  * Query parameters for an API request.
  * @typedef {Object} QueryParameters
  * @extends PaginationOptions
+ * @property {string} sort - The sort options for the request.
  */
-export type QueryParameters = Partial<PaginationOptions>;
+export interface QueryParameters extends Partial<PaginationOptions> {
+  sort?: SortOption;
+}
 
 /**
  * Information about a movie.
@@ -138,6 +141,52 @@ export interface Quote {
   // the movie property is empty.
   movie?: string;
 }
+
+// Sort options for an API request is composed of the property name followed by the sort direction
+// separated by a colon. For example, to sort by the character property in descending order, the
+// sort option would be:
+// character:desc
+// Even these sort enums are verbose, they could be constructed from an OpenAPI spec
+// and help to ensure that the sort options are valid for users of the SDK.
+
+/**
+ * Sort options for Quotes.
+ */
+export type QuoteSortOption =
+  | "_id:asc"
+  | "_id:desc"
+  | "character:asc"
+  | "character:desc"
+  | "dialog:asc"
+  | "dialog:desc"
+  | "movie:asc"
+  | "movie:desc";
+
+/**
+ * Sort options for Movies.
+ */
+export type MovieSortOption =
+  | "_id:asc"
+  | "_id:desc"
+  | "academyAwardNominations:asc"
+  | "academyAwardNominations:desc"
+  | "academyAwardWins:asc"
+  | "academyAwardWins:desc"
+  | "boxOfficeRevenueInMillions:asc"
+  | "boxOfficeRevenueInMillions:desc"
+  | "budgetInMillions:asc"
+  | "budgetInMillions:desc"
+  | "name:asc"
+  | "name:desc"
+  | "rottenTomatoesScore:asc"
+  | "rottenTomatoesScore:desc"
+  | "runtimeInMinutes:asc"
+  | "runtimeInMinutes:desc";
+
+/**
+ * Sort options for the API.
+ */
+export type SortOption = QuoteSortOption | MovieSortOption;
 
 /**
  * Defines the structure of a response from the API when multiple documents of a given type are included.

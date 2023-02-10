@@ -82,3 +82,12 @@ Deno.test("listMovieQuotes", async () => {
   );
   assertEquals(response, movieQuotes);
 });
+
+Deno.test("sort", async () => {
+  const response = await listMovies(
+    mockSession(multipleMovies) as SdkSession<MoviesResponse>,
+  )(
+    { sort: "name:asc" },
+  );
+  assertEquals(response, multipleMovies);
+});

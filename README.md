@@ -43,6 +43,11 @@ await lotr.authenticate();
 // For list methods you can pass pagination options
 const options = { limit: 2, offset: 0, page: 1 };
 
+// Sort options are available for list methods
+// By providing sort=field:asc or sort=field:desc you can sort
+// by the field in ascending or descending order.
+// const options = { sort: "name:asc" };
+
 // Get a list of movies
 const movies = await lotr.listMovies(); // => { docs: [{ _id: "123", name: "The Fellowship of the Ring" }], ... }
 
