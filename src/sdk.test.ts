@@ -136,10 +136,12 @@ Deno.test("allMovieQuotes async iterator", async () => {
     },
   );
   const quotes = new Set();
-  for await (const movie of lotr.allMovies({ limit: 1 })) {
-    quotes.add(movie);
+  for await (
+    const quote of lotr.allMovieQuotes("5cd95395de30eff6ebccde5b", { limit: 1 })
+  ) {
+    quotes.add(quote.dialog);
   }
   assertEquals(quotes.size, 2);
-  assertEquals(quotes.has(firstQuote), true);
-  assertEquals(quotes.has(secondQuote), true);
+  assertEquals(quotes.has(firstQuote.dialog), true);
+  assertEquals(quotes.has(secondQuote.dialog), true);
 });

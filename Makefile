@@ -89,7 +89,7 @@ docs:
 	deno doc mod.ts
 
 coverage: clean test
-	deno test --coverage=coverage --unstable
+	RUN_INTEGRATION_TESTS=true deno test -A --coverage=coverage --unstable
 	deno coverage --lcov --unstable coverage/ > coverage/coverage.lcov
 	genhtml -o coverage/html coverage/coverage.lcov
 	open coverage/html/index.html

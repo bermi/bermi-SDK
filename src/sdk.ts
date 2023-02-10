@@ -69,12 +69,13 @@ export default (
 
   /**
    * Use this method to get all movies using an async iterator
+   * @param params The pagination options
+   * @returns An async iterator
    */
   async function* allMovies(params: QueryParameters = {}) {
     const limit = params.limit || 1000;
     const p = { ...params, limit, offset: 0, page: 0 };
     let res: MoviesResponse = await listMovies(p);
-    if (!res.docs || !res.docs.length) return;
     yield* res.docs;
     let totalDocs = res.total;
 
@@ -83,12 +84,17 @@ export default (
       p.page += 1;
       p.offset += limit;
       res = await listMovies(p);
-      if (!res.docs || !res.docs.length) return;
       yield* res.docs;
       totalDocs -= limit;
     }
   }
 
+  /**
+   * Use this method to get all quotes for a movie using an async iterator
+   * @param id The movie id
+   * @param params The pagination options
+   * @returns An async iterator
+   */
   const allMovieQuotes = async function* (
     id: string,
     params: QueryParameters = {},
@@ -96,7 +102,6 @@ export default (
     const limit = params.limit || 1000;
     const p = { ...params, limit, offset: 0, page: 0 };
     let res: QuotesResponse = await listMovieQuotes(id, p);
-    if (!res.docs || !res.docs.length) return;
     yield* res.docs;
     let totalDocs = res.total;
 
@@ -105,7 +110,6 @@ export default (
       p.page += 1;
       p.offset += limit;
       res = await listMovieQuotes(id, p);
-      if (!res.docs || !res.docs.length) return;
       yield* res.docs;
       totalDocs -= limit;
     }

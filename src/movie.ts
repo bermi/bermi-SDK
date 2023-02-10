@@ -51,9 +51,11 @@ async (
   // quotesResponse.docs.id is the same as quotesResponse.docs._id
   // we'll remove the id property to avoid confusion and keep consistency
   // with other responses
-  quotesResponse.docs = (quotesResponse.docs || []).map((doc) => (
-    { ...doc, id: undefined }
-  ));
+  quotesResponse.docs = (quotesResponse.docs || []).map((doc) => {
+    const idProp = "id";
+    const { [idProp]: _, ...docsNoId } = { ...doc, id: undefined };
+    return docsNoId;
+  });
   return quotesResponse;
 };
 
