@@ -43,6 +43,7 @@ import type {
   SdkSession,
 } from "../types.ts";
 import movie from "./movie.ts";
+import { allData } from "./paginator.ts";
 import { createApiSession } from "./session.ts";
 
 export default (
@@ -68,52 +69,28 @@ export default (
     movie.listMovieQuotes(session as SdkSession<QuotesResponse>)(id, params);
 
   /**
-   * Use this method to get all movies using an async iterator
-   * @param params The pagination options
-   * @returns An async iterator
+   * A function that fetches all movies and returns an async iterator.
+   * @param params The pagination options.
+   * @returns An async iterator of movies.
    */
-  async function* allMovies(params: QueryParameters = {}) {
-    const limit = params.limit || 1000;
-    const p = { ...params, limit, offset: 0, page: 0 };
-    let res: MoviesResponse = await listMovies(p);
-    yield* res.docs;
-    let totalDocs = res.total;
-
-    // We need to keep fetching until we get all the documents
-    while (res.docs.length < totalDocs && totalDocs > 0) {
-      p.page += 1;
-      p.offset += limit;
-      res = await listMovies(p);
-      yield* res.docs;
-      totalDocs -= limit;
-    }
+  async function* allMovies(
+    params: QueryParameters = {},
+  ) {
+    yield* allData(listMovies, params);
   }
 
   /**
-   * Use this method to get all quotes for a movie using an async iterator
-   * @param id The movie id
-   * @param params The pagination options
-   * @returns An async iterator
+   * A function that fetches all quotes for a movie and returns an async iterator.
+   * @param id The movie id.
+   * @param params The pagination options.
+   * @returns An async iterator of quotes.
    */
-  const allMovieQuotes = async function* (
+  async function* allMovieQuotes(
     id: string,
     params: QueryParameters = {},
   ) {
-    const limit = params.limit || 1000;
-    const p = { ...params, limit, offset: 0, page: 0 };
-    let res: QuotesResponse = await listMovieQuotes(id, p);
-    yield* res.docs;
-    let totalDocs = res.total;
-
-    // We need to keep fetching until we get all the documents
-    while (res.docs.length < totalDocs && totalDocs > 0) {
-      p.page += 1;
-      p.offset += limit;
-      res = await listMovieQuotes(id, p);
-      yield* res.docs;
-      totalDocs -= limit;
-    }
-  };
+    yield* allData((params) => listMovieQuotes(id, params), params);
+  }
 
   return {
     authenticate: session.authenticate || (() => Promise.resolve()),
