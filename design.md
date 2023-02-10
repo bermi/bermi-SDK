@@ -120,11 +120,16 @@ The LOTR API uses a simple pagination mechanism to return a list of results.
 At this time, the parameters required by the SDK are the same as the ones
 required by the API.
 
-In the future, a `fetchAll` method could return a list of all the results for a
-given resource. The `fetchAll` method could be used internally to implement
-`allMovies` and `allMovieQuotes` methods. While this seems an antipattern, the
-domain for Lord of the Rings is small enough that this would not be a problem as
-long as caching is implemented.
+The `allMovies` and `allMovieQuotes` methods use an
+[async generator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncGenerator)
+to return all the results for a given query. This allows the user to iterate
+over the results without having to worry about pagination.
+
+```typescript
+for await (const movie of lotr.allMovies()) {
+  console.log({ movie });
+}
+```
 
 ### Caching
 

@@ -34,3 +34,8 @@ console.log(
 
 // You can also get a movie by id
 // const movie = await lotr.getMovie("5cd95395de30eff6ebccde5b");
+
+// Use lotr.getAllMovies() to get all movies using an async iterator
+for await (const movie of lotr.allMovies()) {
+  console.log({ movie });
+}

@@ -38,7 +38,7 @@ import type {
   QueryParameters,
   QuotesResponse,
   SdkOptions,
-  SdkSession,
+  SdkSession
 } from "../types.ts";
 import movie from "./movie.ts";
 import { createApiSession } from "./session.ts";
@@ -62,10 +62,33 @@ export default (options: SdkOptions = {
   ): Promise<QuotesResponse> =>
     movie.listMovieQuotes(session as SdkSession<QuotesResponse>)(id, params);
 
+  /**
+   * Use this method to get all movies using an async iterator
+   */
+  async function* allMovies(params: QueryParameters = {}) {
+    const limit = params.limit || 1000;
+    const p = { ...params, limit, offset: 0, page: 0 };
+    let res: MoviesResponse = await listMovies(p);
+    if (!res.docs || !res.docs.length) return;
+    yield* res.docs;
+    let totalDocs = res.total;
+
+    // We need to keep fetching until we get all the documents
+    while (res.docs.length < totalDocs && totalDocs > 0) {
+      p.page += 1;
+      p.offset += limit;
+      res = await listMovies(p);
+      if (!res.docs || !res.docs.length) return;
+      yield* res.docs;
+      totalDocs -= limit;
+    }
+  }
+
   return {
     authenticate: session.authenticate || (() => Promise.resolve()),
     getMovie,
     listMovieQuotes,
     listMovies,
+    allMovies,
   };
 };

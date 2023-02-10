@@ -58,6 +58,14 @@ const movie = await lotr.getMovie("123"); // => { _id: "123", name: "The Fellows
 const quotes = await lotr.listMovieQuotes("123"); // => { docs: [{ _id: "456", character: "789", dialog: "You shall not pass!" }], ... }
 ```
 
+Use an async iterator to iterate over all the movies:
+
+```typescript
+for await (const movie of lotr.allMovies()) {
+  console.log({ movie });
+}
+```
+
 ## Examples
 
 The directory `./examples` contains examples showing how to use this library.

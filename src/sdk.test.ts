@@ -7,7 +7,7 @@ Deno.test("should expose public API methods", () => {
   const methods = Object.keys(lotr).sort();
   const expected = [
     // "allMovieQuotes",
-    // "allMovies",
+    "allMovies",
     "authenticate",
     "getMovie",
     "listMovieQuotes",
