@@ -53,14 +53,15 @@ can warrant using a third-party library.
 The code is structured as follows:
 
 ```
-./mod.ts // Used by Deno to expose ./src/sdk.ts
-./types.ts // Type and interface definitions
-./src/
-  ./session.ts // Explained below
-  ./movie.ts // Movie module
-  ./quote.ts // Quote module
-  ./sdk.ts // Entry point for the SDK
-  ./cli.ts // CLI main entry point
+mod.ts // Used by Deno to expose ./src/sdk.ts
+types.ts // Type and interface definitions
+src
+├── logger.ts // Simple logger
+├── movie.ts // Calls to /movie REST resources
+├── paginator.ts // Allows using generators to iterate over paginated resources
+├── sdk.ts // The public API for the sdk, caching and optimizations happen here
+└── session.ts // HTTP session handling explained below
+npm // The npm package will be generated here via `make npm`
 ```
 
 The SDK uses a Session instance to store the API key and the base URL of the API
@@ -69,35 +70,10 @@ as well as other settings, such as timeouts.
 The session will be passed to the Movie and Quote modules as a dependency. This
 allows simple mocking of the session for testing purposes.
 
-From a user perspective, the SDK will be used as follows:
+The README file contains the user documentation and links to the distributed
+packages.
 
-```typescript
-import lotrSdk, {
-  LotrSdk,
-  Movie,
-  MoviesResponse,
-  PaginationOptions,
-  Quote,
-  QuotesResponse,
-} from "https://deno.land/x/lotr/mod.ts";
-
-const lotr: LotrSdk = lotrSdk({ apiToken: "l1bl4b" });
-
-// Authenticate the session
-await lotr.authenticate();
-
-// For list methods, the pagination options can be passed as the last argument
-const options: PaginationOptions = { limit: 2, offset: 0, page: 1 };
-
-// Get a list of movies
-const movies: Movie[] = await lotr.listMovies(); // => { docs: [{ _id: "123", name: "The Fellowship of the Ring" }], ... }
-
-// Get a movie by id
-const movie: MoviesResponse = await lotr.getMovie("123"); // => { _id: "123", name: "The Fellowship of the Ring" }
-
-// Get a list of quotes for a movie
-const quotes: QuotesResponse = await lotr.listMovieQuotes("123"); // => { docs: [{ _id: "456", character: "789", dialog: "You shall not pass!" }], ... }
-```
+Test coverage can be checked by running `make coverage`.
 
 ### Authentication
 
