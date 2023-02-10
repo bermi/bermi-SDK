@@ -72,6 +72,24 @@ for await (const quote of lotr.allMovieQuotes("5cd95395de30eff6ebccde5b")) {
 }
 ```
 
+The [documentation for the API](https://the-one-api.dev/documentation) exposes
+mongodb lookup expression syntax that can be used to filter, sort, and match
+results before returning them. JavaScript Array methods: filter, sort, find,
+reduce, map, etc. are more familiar to developers than custom methods or
+options.
+
+For example, to get all the movies that have a runtime greater than 200 minutes:
+
+```typescript
+const allMovies = [];
+for await (const movie of lotr.allMovies()) {
+  allMovies.push(movie);
+}
+const longMovies = allMovies.filter((movie) => movie.runtimeInMinutes > 200);
+```
+
+This method trades off memory and the initial latency for a more familiar API.
+
 ## Examples
 
 The directory `./examples` contains examples showing how to use this library.
