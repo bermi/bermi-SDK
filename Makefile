@@ -3,6 +3,12 @@ IGNORED_DIRS=deno_dir,npm,examples
 ALLOWED_ENV_VARS=LOTR_API_VERSION,LOTR_API_ENDPOINT,LOTR_API_TOKEN,DEBUG
 ALLOWED_NET=the-one-api.dev
 
+# Make sure the current directory name is lotr-sdk, this will simplify
+# building the binaries and bundles.
+ifneq ($(notdir $(CURDIR)),lotr-sdk)
+$(error Please make sure the repo directory name is lotr-sdk.)
+endif
+
 all: build
 
 build: \
@@ -66,7 +72,7 @@ test: format lint .git/hooks/pre-commit
 		--unstable \
 		--ignore=$(IGNORED_DIRS)
 
-test-integration: format lint .git/hooks/pre-commit
+test-integration: format lint .git/hooks/pre-commit guard-LOTR_API_TOKEN
 	RUN_INTEGRATION_TESTS=true deno test \
 		--allow-env=$(ALLOWED_ENV_VARS),RUN_INTEGRATION_TESTS  \
 		--allow-net=$(ALLOWED_NET) \
@@ -82,8 +88,11 @@ test-cached-deps: format lint lock.json
 		--unstable \
 		--ignore=$(IGNORED_DIRS)
 
-run-examples:
-	deno run examples/deno/movies_and_quotes.ts
+run-examples: guard-LOTR_API_TOKEN
+	deno run \
+		--allow-env=$(ALLOWED_ENV_VARS),RUN_INTEGRATION_TESTS  \
+		--allow-net=$(ALLOWED_NET) \
+		 examples/deno/movies_and_quotes.ts
 	cd examples/nodejs/ && npm install && node index.js
 
 docs:
@@ -96,6 +105,12 @@ coverage: clean test
 	open coverage/html/index.html
 
 pre-commit: clean lock.json format test build
+
+guard-%:
+	@ if [ "${${*}}" = "" ]; then \
+		echo "Required environment variable $* not set"; \
+		exit 1; \
+	fi
 
 .git/hooks/pre-commit:
 	mkdir -p $(@D)
