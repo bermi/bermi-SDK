@@ -49,14 +49,16 @@ const runCommand = async (
     if (command.startsWith("all")) {
       // This is an async iterator
       for await (const item of fn(...args)) {
-        Deno.stdout.write(
+        Deno.stdout.writeSync(
           new TextEncoder().encode(`${JSON.stringify(item)}\n`),
         );
       }
     } else {
-      Deno.stdout.writeSync(
-        new TextEncoder().encode(`${JSON.stringify(await fn(...args))}\n`),
-      );
+      for (const item of (await fn(...args)).docs) {
+        Deno.stdout.writeSync(
+          new TextEncoder().encode(`${JSON.stringify(item)}\n`),
+        );
+      }
     }
   } catch (error) {
     Deno.stderr.writeSync(
@@ -71,8 +73,11 @@ const runCommand = async (
 
 export const cli = async () => {
   const lotr: LotrSdk.LotrSdk = lotrSdk();
-  const cmd = Deno.args[0] || "help";
-  const args = getArgs(Deno.args.slice(1));
+  // If the first argument is --target, then we are running
+  // from a deno build.
+  const argOffset = Deno.args[0] === "--target" ? 2 : 0;
+  const cmd = Deno.args[argOffset] || "help";
+  const args = getArgs(Deno.args.slice(argOffset + 1));
 
   const legalMethods = ["help", ...Object.keys(lotr).sort()];
   if (!legalMethods.includes(cmd)) {
