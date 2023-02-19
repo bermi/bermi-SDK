@@ -10,6 +10,13 @@ import { getLogger } from "./logger.ts";
 
 const LEADING_SLASH_RE = /^\//;
 const TRAILING_SLASH_RE = /\/$/;
+const DEBUG_HEADERS = [
+  "content-length",
+  "content-type",
+  "x-ratelimit-limit",
+  "x-ratelimit-remaining",
+  "x-ratelimit-reset",
+];
 
 export const defaultOptions = {
   apiVersion: (Deno.env.get("LOTR_API_VERSION") || "v2").replace(
@@ -89,11 +96,25 @@ export const createApiSession = (
         `${baseUrl}/${path.replace(LEADING_SLASH_RE, "")}`,
         params,
       );
-      logger.info(`GET ${url}`);
+
       if (!authenticated) {
         await authenticate();
       }
+      logger.info(`GET: ${url}`);
       const response = await fetch(url, options);
+
+      // Log response headers
+      logger.debug(`RESPONSE: ${
+        JSON.stringify({
+          url,
+          status: response.status,
+          // only log the headers we care about
+          headers: [...response.headers].filter(([key]) =>
+            DEBUG_HEADERS.includes(key)
+          ).reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {}),
+        })
+      }`);
+
       // If the token has expired, or revoked, we need to re-authenticate
       // and try again
       if (response.status === 401) {
