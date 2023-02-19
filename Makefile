@@ -3,32 +3,25 @@ IGNORED_DIRS=deno_dir,npm,examples
 ALLOWED_ENV_VARS=LOTR_API_VERSION,LOTR_API_ENDPOINT,LOTR_API_TOKEN,DEBUG
 ALLOWED_NET=the-one-api.dev
 SRC_FILES=$(wildcard src/*.ts)
-
-# Make sure the current directory name is lotr-sdk, this will simplify
-# building the binaries and bundles.
-ifneq ($(notdir $(CURDIR)),lotr-sdk)
-$(error Please make sure the repo directory name is lotr-sdk.)
-endif
+BIN_DIR=deno_dir/dist/binaries
+# .exe is not needed for the target, but it allows us to avoid having to recompile
+# that's the reason we use basename in the compile target
+BINARY_TARGETS=x86_64-apple-darwin aarch64-apple-darwin x86_64-unknown-linux-gnu x86_64-pc-windows-msvc.exe
+BINARIES=$(addprefix $(BIN_DIR)/,$(BINARY_TARGETS))
 
 all: build
 
 build: \
 	lock.json \
 	test \
-	deno_dir/dist/binaries/lotr-sdk \
+	compile \
 	deno_dir/dist/bundles/lotr-sdk.js \
 	npm
 
+compile: $(BINARIES)
 deno_dir/dist/binaries/%: mod.ts $(SRC_FILES)
 	mkdir -p deno_dir/dist/binaries
-	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable mod.ts --target x86_64-apple-darwin
-	mv $* $@-macos-x86
-	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable mod.ts --target aarch64-apple-darwin
-	mv $* $@-macos-arm
-	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable mod.ts --target x86_64-unknown-linux-gnu
-	mv $* $@-linux-x86
-	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable mod.ts --target x86_64-pc-windows-msvc
-	mv $* $@.exe
+	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable --target $(basename $*) --output $(basename $@) mod.ts
 
 deno_dir/dist/bundles/%.js: mod.ts
 	mkdir -p deno_dir/dist/bundles
