@@ -19,3 +19,21 @@ jobs:
           deno fmt --ignore=deno_dir --check
           DEBUG=true deno test --lock=lock.json --allow-none --allow-env --unstable
           DEBUG=true RUN_INTEGRATION_TESTS=true deno test --lock=lock.json --allow-none --allow-env --unstable  --allow-net
+      - name: Build release
+        run: |
+          make deno_dir/dist/releases
+        # if: startsWith(github.ref, 'refs/tags/')
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: deno_dir/dist/releases/*
+        if: startsWith(github.ref, 'refs/tags/')
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            deno_dir/dist/releases/*
+          draft: true
+          fail_on_unmatched_files: true
+          generate_release_notes: true
+        if: startsWith(github.ref, 'refs/tags/')

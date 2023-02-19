@@ -1,3 +1,4 @@
+APP_NAME=lotr-sdk
 export DENO_DIR = ./deno_dir
 IGNORED_DIRS=deno_dir,npm,examples
 ALLOWED_ENV_VARS=LOTR_API_VERSION,LOTR_API_ENDPOINT,LOTR_API_TOKEN,DEBUG
@@ -15,13 +16,26 @@ build: \
 	lock.json \
 	test \
 	compile \
-	deno_dir/dist/bundles/lotr-sdk.js \
+	deno_dir/dist/bundles/$(APP_NAME).js \
 	npm
 
 compile: $(BINARIES)
 deno_dir/dist/binaries/%: mod.ts $(SRC_FILES)
-	mkdir -p deno_dir/dist/binaries
+	mkdir -p $(@D)
 	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable --target $(basename $*) --output $(basename $@) mod.ts
+
+.PHONY: deno_dir/dist/releases
+deno_dir/dist/releases: compile
+	mkdir -p $@
+	cp -R deno_dir/dist/binaries/x86_64-apple-darwin $@/$(APP_NAME)-darwin-amd64
+	shasum -a 256 $@/$(APP_NAME)-darwin-amd64 2> /dev/null > $@/$(APP_NAME)-darwin-amd64.checksum
+	cp -R deno_dir/dist/binaries/x86_64-unknown-linux-gnu $@/$(APP_NAME)-linux-amd64
+	shasum -a 256 $@/$(APP_NAME)-linux-amd64 2> /dev/null > $@/$(APP_NAME)-linux-amd64.checksum
+	cp -R deno_dir/dist/binaries/x86_64-pc-windows-msvc.exe $@/$(APP_NAME)-windows-amd64.exe
+	shasum -a 256 $@/$(APP_NAME)-windows-amd64.exe 2> /dev/null > $@/$(APP_NAME)-windows-amd64.exe.checksum
+	cp -R deno_dir/dist/binaries/aarch64-apple-darwin $@/$(APP_NAME)-darwin-arm64
+	shasum -a 256 $@/$(APP_NAME)-darwin-arm64 2> /dev/null > $@/$(APP_NAME)-darwin-arm64.checksum
+
 
 deno_dir/dist/bundles/%.js: mod.ts
 	mkdir -p deno_dir/dist/bundles

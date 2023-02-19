@@ -108,7 +108,9 @@ export const cli = async () => {
   const argOffset = argsCopy[0] === "--target" ? 2 : 0;
   let args = getArgs(argsCopy.slice(argOffset));
   const lastArg = args[args.length - 1] as Record<string, boolean> || {};
-  const cmd = (!lastArg.h && !lastArg.help) ? argsCopy[argOffset] : "help";
+  const cmd = (!lastArg.h && !lastArg.help)
+    ? (argsCopy[argOffset] || "help")
+    : "help";
   if (args[0] === cmd) {
     args = args.slice(1);
   }
