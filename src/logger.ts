@@ -1,13 +1,17 @@
 import type { Logger } from "../types.ts";
 
 /**
- * Simple logger that logs to the console when the DEBUG environment variable is set to true.
+ * Simple logger that logs to stderr when the DEBUG environment variable is set to true.
  */
 const log = (
   message: string,
-  method: "log" | "error" | "info" | "warn" = "log",
+  method: "log" | "error" | "info" | "warn" | "debug" = "log",
 ) => {
-  console[method](message); // eslint-disable-line no-console
+  Deno.stderr.write(
+    new TextEncoder().encode(
+      `${method}: ${message}\n`,
+    ),
+  );
 };
 
 export const getLogger = (): Logger => {
@@ -15,7 +19,7 @@ export const getLogger = (): Logger => {
 
   if (debug) {
     return {
-      debug: (message: string) => log(message, "log"),
+      debug: (message: string) => log(message, "debug"),
       error: (message: string) => log(message, "error"),
       info: (message: string) => log(message, "info"),
       warn: (message: string) => log(message, "warn"),
