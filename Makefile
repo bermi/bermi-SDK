@@ -28,14 +28,16 @@ deno_dir/dist/binaries/%: mod.ts $(SRC_FILES)
 deno_dir/dist/releases: compile
 	mkdir -p $@
 	cp -R deno_dir/dist/binaries/x86_64-apple-darwin $@/$(APP_NAME)-darwin-amd64
-	shasum -a 256 $@/$(APP_NAME)-darwin-amd64 2> /dev/null > $@/$(APP_NAME)-darwin-amd64.checksum
 	cp -R deno_dir/dist/binaries/x86_64-unknown-linux-gnu $@/$(APP_NAME)-linux-amd64
-	shasum -a 256 $@/$(APP_NAME)-linux-amd64 2> /dev/null > $@/$(APP_NAME)-linux-amd64.checksum
 	cp -R deno_dir/dist/binaries/x86_64-pc-windows-msvc.exe $@/$(APP_NAME)-windows-amd64.exe
-	shasum -a 256 $@/$(APP_NAME)-windows-amd64.exe 2> /dev/null > $@/$(APP_NAME)-windows-amd64.exe.checksum
 	cp -R deno_dir/dist/binaries/aarch64-apple-darwin $@/$(APP_NAME)-darwin-arm64
-	shasum -a 256 $@/$(APP_NAME)-darwin-arm64 2> /dev/null > $@/$(APP_NAME)-darwin-arm64.checksum
+	make deno_dir/dist/releases/$(APP_NAME)-darwin-amd64.checksum \
+		deno_dir/dist/releases/$(APP_NAME)-linux-amd64.checksum \
+		deno_dir/dist/releases/$(APP_NAME)-windows-amd64.exe.checksum \
+		deno_dir/dist/releases/$(APP_NAME)-darwin-arm64.checksum
 
+deno_dir/dist/releases/%.checksum: deno_dir/dist/releases/%
+	shasum -a 256 $< 2> /dev/null | cut -d " " -f1 > $@
 
 deno_dir/dist/bundles/%.js: mod.ts
 	mkdir -p deno_dir/dist/bundles
