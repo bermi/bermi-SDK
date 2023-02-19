@@ -25,7 +25,7 @@ import lotrSdk, { LotrSdk } from "@bermi/lotr-sdk";
 Using Deno:
 
 ```typescript
-import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr@v1.3.2/mod.ts";
+import lotrSdk, { LotrSdk } from "https://deno.land/x/lotr@v1.3.3/mod.ts";
 ```
 
 ### Example
