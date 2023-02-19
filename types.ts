@@ -11,15 +11,15 @@
 export interface LotrSdk {
   authenticate: () => Promise<void>;
   getMovie: (id: string) => Promise<Movie>;
-  listMovies: (params: QueryParameters) => Promise<MoviesResponse>;
+  listMovies: (params?: QueryParameters) => Promise<MoviesResponse>;
   listMovieQuotes: (
     id: string,
-    params: QueryParameters,
+    params?: QueryParameters,
   ) => Promise<QuotesResponse>;
-  allMovies: (params: QueryParameters) => AsyncGenerator<Movie, void, unknown>;
+  allMovies: (params?: QueryParameters) => AsyncGenerator<Movie, void, unknown>;
   allMovieQuotes: (
     id: string,
-    params: QueryParameters,
+    params?: QueryParameters,
   ) => AsyncGenerator<Quote, void, unknown>;
 }
 

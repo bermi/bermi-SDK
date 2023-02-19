@@ -2,6 +2,7 @@ export DENO_DIR = ./deno_dir
 IGNORED_DIRS=deno_dir,npm,examples
 ALLOWED_ENV_VARS=LOTR_API_VERSION,LOTR_API_ENDPOINT,LOTR_API_TOKEN,DEBUG
 ALLOWED_NET=the-one-api.dev
+SRC_FILES=$(wildcard src/*.ts)
 
 # Make sure the current directory name is lotr-sdk, this will simplify
 # building the binaries and bundles.
@@ -18,15 +19,15 @@ build: \
 	deno_dir/dist/bundles/lotr-sdk.js \
 	npm
 
-deno_dir/dist/binaries/%: mod.ts
+deno_dir/dist/binaries/%: mod.ts $(SRC_FILES)
 	mkdir -p deno_dir/dist/binaries
-	deno compile --unstable mod.ts --target x86_64-apple-darwin
+	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable mod.ts --target x86_64-apple-darwin
 	mv $* $@-macos-x86
-	deno compile --unstable mod.ts --target aarch64-apple-darwin
+	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable mod.ts --target aarch64-apple-darwin
 	mv $* $@-macos-arm
-	deno compile --unstable mod.ts --target x86_64-unknown-linux-gnu
+	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable mod.ts --target x86_64-unknown-linux-gnu
 	mv $* $@-linux-x86
-	deno compile --unstable mod.ts --target x86_64-pc-windows-msvc
+	deno compile --allow-env=$(ALLOWED_ENV_VARS) --allow-net=$(ALLOWED_NET) --unstable mod.ts --target x86_64-pc-windows-msvc
 	mv $* $@.exe
 
 deno_dir/dist/bundles/%.js: mod.ts
