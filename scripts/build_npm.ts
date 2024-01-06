@@ -1,4 +1,4 @@
-import { build, emptyDir } from "https://deno.land/x/dnt@0.33.1/mod.ts";
+import { build, emptyDir } from "https://deno.land/x/dnt@0.39.0/mod.ts";
 import { VERSION } from "../version.ts";
 
 await emptyDir("./npm");
@@ -6,12 +6,9 @@ await emptyDir("./npm");
 await build({
   entryPoints: ["./mod.ts"],
   outDir: "./npm",
-  // scriptMode: true,
   shims: {
     deno: true,
     undici: true, // Add support for fetch and other browser APIs
-    // timers: true,
-    // domException: "dev",
   },
   package: {
     name: "@bermi/lotr-sdk",
@@ -29,6 +26,7 @@ await build({
     bugs: {
       url: "https://github.com/bermi/bermi-SDK/issues",
     },
+    _generatedBy: "dnt@0.39.0",
   },
 });
 
