@@ -1,3 +1,5 @@
+SHELL = /bin/bash -o pipefail
+
 APP_NAME=lotr-sdk
 export DENO_DIR = ./deno_dir
 IGNORED_DIRS=deno_dir,npm,examples
@@ -9,6 +11,20 @@ BIN_DIR=deno_dir/dist/binaries
 # that's the reason we use basename in the compile target
 BINARY_TARGETS=x86_64-apple-darwin aarch64-apple-darwin x86_64-unknown-linux-gnu x86_64-pc-windows-msvc.exe
 BINARIES=$(addprefix $(BIN_DIR)/,$(BINARY_TARGETS))
+
+# Appends to .env lines not found on .env-sample, this helps developers
+# filling in the gaps with any new environment setting that's added
+.env: .env-sample
+	@echo "Environment variables copied from .env-sample to .env"
+	@touch $@
+	@while read -r LINE; do \
+		grep -qF -- "$$LINE" $@ || echo "$$LINE" >> $@; \
+	done < $<
+	@echo "Please edit .env to set your environment variables"
+
+# Exposes all environment variables from .env to the makefile
+include .env
+export
 
 all: build
 
@@ -108,17 +124,42 @@ run-examples: guard-LOTR_API_TOKEN
 docs:
 	deno doc mod.ts
 
-coverage: clean test
+coverage: clean test guard-LOTR_API_TOKEN ensure-binary-lcov
 	RUN_INTEGRATION_TESTS=true deno test -A --coverage=coverage --unstable
 	deno coverage --lcov --unstable coverage/ > coverage/coverage.lcov
 	genhtml -o coverage/html coverage/coverage.lcov
-	open coverage/html/index.html
+	if [ "$$(uname)" = "Darwin" ]; then \
+		open coverage/html/index.html; \
+	fi;
 
 pre-commit: clean lock.json format test build
 
 guard-%:
 	@ if [ "${${*}}" = "" ]; then \
 		echo "Required environment variable $* not set"; \
+		exit 1; \
+	fi
+
+ensure-binary-%:
+	@ if ! command -v ${*} &> /dev/null; then \
+		echo "Required binary ${*} not found"; \
+		if [ "$$(uname)" = "Darwin" ]; then \
+			echo "Please install it using brew: brew install ${*}"; \
+			read -p "Do you want to install it? [y/N] " -n 1 -r; \
+			echo ""; \
+			if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+				brew install ${*}; \
+				exit 0; \
+			fi; \
+		elif [ "$$(uname)" = "Linux" ]; then \
+			echo "Please install it using apt: apt install ${*}"; \
+			read -p "Do you want to install it? [y/N] " -n 1 -r; \
+			echo ""; \
+			if [[ $$REPLY =~ ^[Yy]$$ ]]; then \
+				sudo apt install ${*}; \
+				exit 0; \
+			fi; \
+		fi; \
 		exit 1; \
 	fi
 
