@@ -3,15 +3,20 @@
   "build": {
     "context": "./../",
     "dockerfile": "./Dockerfile.ubuntu",
-    "cacheFrom": ["bermi/lotr-sdk:latest"]
+    "cacheFrom": [
+      "bermi/lotr-sdk:latest"
+    ]
   },
-  "settings": {
-    "terminal.integrated.defaultProfile.linux": "bash"
+  "customizations": {
+    "settings": {
+      "terminal.integrated.defaultProfile.linux": "bash"
+    },
+    "extensions": [
+      "github.copilot",
+      "ms-vscode.live-server",
+      "denoland.vscode-deno"
+    ]
   },
-  "extensions": [
-    "github.copilot",
-    "denoland.vscode-deno"
-  ],
   "hostRequirements": {
     "cpus": 2,
     "memory": "1gb",

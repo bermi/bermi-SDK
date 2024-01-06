@@ -1,9 +1,11 @@
 FROM ubuntu:22.04
 
+ENV DENO_VERSION=1.39.2
+
 RUN apt-get update && \
-  apt-get install -y git curl unzip build-essential && \
+  apt-get install -y git curl unzip build-essential lcov && \
   apt-get clean -y && \
-  curl -fsSL https://deno.land/x/install/install.sh | sh && \
+  curl -fsSL https://gist.githubusercontent.com/LukeChannings/09d53f5c364391042186518c8598b85e/raw/ac8cd8c675b985edd4b3e16df63ffef14d1f0e24/deno_install.sh | sh && \
   curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && \
   bash -c ". /root/.nvm/nvm.sh && nvm install node && nvm alias default node"
 

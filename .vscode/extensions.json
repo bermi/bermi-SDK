@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "github.copilot",
     "denoland.vscode-deno"
   ]
 }
